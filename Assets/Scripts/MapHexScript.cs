@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using TMPro;
 
 public class MapHexScript : MonoBehaviour
 {
@@ -9,12 +11,23 @@ public class MapHexScript : MonoBehaviour
     private ManagerScript managerScript;
     private string defaultTag;
     private Color defaultColor;
+    public int q;
+    public int r;
+    public TMP_Text coordText;
+
     // Start is called before the first frame update
     void OnEnable()
     {
         managerScript = GameObject.Find("GameManager").GetComponent<ManagerScript>();
         defaultTag = managerScript.defaultHex.gameObject.tag;
         defaultColor = managerScript.defaultHex.GetComponent<Image>().color;
+        //Debug.Log("hello");
+    }
+
+    void Start()
+    {
+        string coords = "(" + q.ToString() + "," + r.ToString() + ")";
+        coordText.text = (coords);
     }
 
     public void GetHex()
@@ -31,6 +44,6 @@ public class MapHexScript : MonoBehaviour
             gameObject.GetComponent<Image>().color = managerScript.HexColor;
         }
 
-        Debug.Log(gameObject.tag);
+        Debug.Log(r);
     }
 }

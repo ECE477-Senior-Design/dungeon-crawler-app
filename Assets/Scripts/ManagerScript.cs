@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ManagerScript : MonoBehaviour
 {
@@ -16,5 +17,11 @@ public class ManagerScript : MonoBehaviour
     }
 
     public Color HexColor{get; set;}
+
+    public void OnEnable()
+    {
+        HexType = defaultHex.tag;
+        HexColor = defaultHex.GetComponent<Image>().color;
+    }
 
 }
