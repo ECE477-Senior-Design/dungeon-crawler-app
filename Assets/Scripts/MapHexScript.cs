@@ -8,12 +8,30 @@ using TMPro;
 public class MapHexScript : MonoBehaviour
 {
     //attach to map hex prefab. This will be applied to every hex on the virtual map.
+
+    public class MapHex
+    {
+        public int q;
+        public int r;
+        public string type;
+
+        public MapHex(int _q, int _r, string _type)
+        {
+            q = _q;
+            r = _r;
+            type = _type;
+        }
+
+    }
     private ManagerScript managerScript;
     private string defaultTag;
     private Color defaultColor;
-    public int q;
-    public int r;
+    public int setQ;
+    public int setR;
     public TMP_Text coordText;
+
+    public MapHex thisHex = new MapHex(0, 0, "Floor");
+
 
     // Start is called before the first frame update
     void OnEnable()
@@ -26,7 +44,10 @@ public class MapHexScript : MonoBehaviour
 
     void Start()
     {
-        string coords = "(" + q.ToString() + "," + r.ToString() + ")";
+        thisHex.q = setQ;
+        thisHex.r = setR;
+        thisHex.type = defaultTag;
+        string coords = "(" + thisHex.q.ToString() + "," + thisHex.r.ToString() + ")";
         coordText.text = (coords);
     }
 
@@ -44,6 +65,6 @@ public class MapHexScript : MonoBehaviour
             gameObject.GetComponent<Image>().color = managerScript.HexColor;
         }
 
-        Debug.Log(r);
+        thisHex.type = gameObject.tag;
     }
 }

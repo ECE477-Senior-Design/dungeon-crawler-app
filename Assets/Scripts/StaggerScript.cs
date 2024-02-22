@@ -20,8 +20,8 @@ public class StaggerScript : MonoBehaviour
             foreach(Transform hex in row)
             {
                 hexScript = hex.GetComponent<MapHexScript>();
-                hexScript.q = qStart + qOffset;
-                hexScript.r = r;
+                hexScript.setQ = qStart + qOffset;
+                hexScript.setR = r;
                 qOffset++;
             }
         }
