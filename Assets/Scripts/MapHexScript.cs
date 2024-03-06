@@ -4,67 +4,63 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class MapHexScript : MonoBehaviour
+
+
+public class MapHexScript : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerUpHandler
 {
     //attach to map hex prefab. This will be applied to every hex on the virtual map.
 
-    public class MapHex
-    {
-        public int q;
-        public int r;
-        public string type;
+    public MapHex thisHex;
+    private MapManager manager;
 
-        public MapHex(int _q, int _r, string _type)
-        {
-            q = _q;
-            r = _r;
-            type = _type;
-        }
-
-    }
-    private ManagerScript managerScript;
-    private string defaultTag;
-    private Color defaultColor;
-    public int setQ;
-    public int setR;
-    public TMP_Text coordText;
-
-    public MapHex thisHex = new MapHex(0, 0, "Floor");
-
-
-    // Start is called before the first frame update
+    //instantiate map hexes as floor type. leave q and r as 0 for now.
+    //q and r will be set during Start by the StaggerScript
     void OnEnable()
     {
-        managerScript = GameObject.Find("GameManager").GetComponent<ManagerScript>();
-        defaultTag = managerScript.defaultHex.gameObject.tag;
-        defaultColor = managerScript.defaultHex.GetComponent<Image>().color;
-        //Debug.Log("hello");
+        manager = GameObject.Find("GameManager").GetComponent<MapManager>();
+        thisHex = new MapHex(0, 0, "Floor");
+        gameObject.tag = thisHex.type;
     }
 
-    void Start()
+    //check for dragging
+    public void OnPointerEnter(PointerEventData data)
     {
-        thisHex.q = setQ;
-        thisHex.r = setR;
-        thisHex.type = defaultTag;
-        string coords = "(" + thisHex.q.ToString() + "," + thisHex.r.ToString() + ")";
-        coordText.text = (coords);
+        Debug.Log("This Hex:" + thisHex.type);
+        Debug.Log("Manager: " + manager.curType);
+        Debug.Log(manager.held);
+        if(manager.held)
+        {
+            thisHex.type = manager.curType;
+            gameObject.tag = thisHex.type;
+            GetComponent<Image>().color = Dictionaries.getColor(manager.curType);
+        }
     }
 
-    public void GetHex()
+    //check for click
+    public void OnPointerDown(PointerEventData data)
     {
-        if(gameObject.tag == managerScript.HexType)
-        {
-            //allow player to unselect hex and reset it to floor if same hex type is still selected
-            gameObject.tag = defaultTag;
-            gameObject.GetComponent<Image>().color = defaultColor;
-        }
-        else
-        {
-            gameObject.tag = managerScript.HexType;
-            gameObject.GetComponent<Image>().color = managerScript.HexColor;
-        }
-
-        thisHex.type = gameObject.tag;
+        // Debug.Log("Manager:" + manager.curType);
+        // Debug.Log("This Hex:" + thisHex.type);
+        manager.held = true;
+        Debug.Log(manager.held);
+        thisHex.type = manager.curType;
+        gameObject.tag = thisHex.type;
+        GetComponent<Image>().color = Dictionaries.getColor(manager.curType);
     }
+
+    public void OnPointerUp(PointerEventData data)
+    {
+        manager.held = false;
+        // foreach(MapHex hex in manager.selection)
+        // {
+        //     Debug.Log("changed");
+        //     hex.type = manager.curType;
+        //     gameObject.tag = manager.curType;
+        // }
+        // Debug.Log("Clear");
+        // manager.selection.Clear();
+    }
+
 }

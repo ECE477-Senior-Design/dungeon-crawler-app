@@ -2,22 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
-public class SelectHexScript : MonoBehaviour
+public class SelectHexScript : MonoBehaviour, IPointerDownHandler
 {
     //attach to select hex prefab
 
-    private ManagerScript managerScript;
+    private MapManager managerScript;
 
     void OnEnable()
     {
-        managerScript = GameObject.Find("GameManager").GetComponent<ManagerScript>();
+        managerScript = GameObject.Find("GameManager").GetComponent<MapManager>();
+        setColor();
     }
 
-    public void SetHex()
+    public void OnPointerDown(PointerEventData data)
     {
-        managerScript.HexType = gameObject.tag;
-        managerScript.HexColor = gameObject.GetComponent<Image>().color;
+        managerScript.curType = gameObject.tag;
         //Debug.Log(gameObject.tag);
+    }
+
+    void setColor()
+    {
+        Dictionaries.colorDict[gameObject.tag] = gameObject.GetComponent<Image>().color;
     }
 }

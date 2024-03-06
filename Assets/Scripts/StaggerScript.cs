@@ -5,10 +5,12 @@ using System;
 
 public class StaggerScript : MonoBehaviour
 {
-    MapHexScript hexScript;
-    // Start is called before the first frame update
-    void OnEnable()
+    MapHex tempHex;
+
+    // Initializes all the hexes
+    void Start()
     {
+        tempHex = new MapHex(0, 0, "Floor");
         foreach(Transform row in transform)
         {
             string rowName = row.transform.name;
@@ -19,9 +21,9 @@ public class StaggerScript : MonoBehaviour
         
             foreach(Transform hex in row)
             {
-                hexScript = hex.GetComponent<MapHexScript>();
-                hexScript.setQ = qStart + qOffset;
-                hexScript.setR = r;
+                tempHex.q = qStart + qOffset;
+                tempHex.r = r;
+                hex.GetComponent<MapHexScript>().thisHex = tempHex;
                 qOffset++;
             }
         }
