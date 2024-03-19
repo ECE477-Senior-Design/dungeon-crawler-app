@@ -27,14 +27,11 @@ public class MapHexScript : MonoBehaviour, IPointerDownHandler, IPointerEnterHan
     //check for dragging
     public void OnPointerEnter(PointerEventData data)
     {
-        Debug.Log("This Hex:" + thisHex.type);
-        Debug.Log("Manager: " + manager.curType);
-        Debug.Log(manager.held);
-        if(manager.held)
+        if(manager.held) //check if mouse is held down
         {
-            thisHex.type = manager.curType;
-            gameObject.tag = thisHex.type;
-            GetComponent<Image>().color = Dictionaries.getColor(manager.curType);
+            thisHex.type = manager.curType; //set this hex type to the selected type
+            gameObject.tag = thisHex.type; //set tag for easier debugging in the editor
+            GetComponent<Image>().color = Dictionaries.GetColor(manager.curType); //change the hex color accordingly
         }
     }
 
@@ -44,23 +41,19 @@ public class MapHexScript : MonoBehaviour, IPointerDownHandler, IPointerEnterHan
         // Debug.Log("Manager:" + manager.curType);
         // Debug.Log("This Hex:" + thisHex.type);
         manager.held = true;
-        Debug.Log(manager.held);
         thisHex.type = manager.curType;
         gameObject.tag = thisHex.type;
-        GetComponent<Image>().color = Dictionaries.getColor(manager.curType);
+        GetComponent<Image>().color = Dictionaries.GetColor(manager.curType);
     }
 
     public void OnPointerUp(PointerEventData data)
     {
         manager.held = false;
-        // foreach(MapHex hex in manager.selection)
-        // {
-        //     Debug.Log("changed");
-        //     hex.type = manager.curType;
-        //     gameObject.tag = manager.curType;
-        // }
-        // Debug.Log("Clear");
-        // manager.selection.Clear();
+    }
+
+    public string GetTypeCode()
+    {
+        return Dictionaries.GetCode(thisHex.type).ToString();
     }
 
 }

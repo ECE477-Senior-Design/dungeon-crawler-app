@@ -10,7 +10,7 @@ public class StaggerScript : MonoBehaviour
     // Initializes all the hexes
     void Start()
     {
-        tempHex = new MapHex(0, 0, "Floor");
+        //tempHex = new MapHex(0, 0, "Floor");
         foreach(Transform row in transform)
         {
             string rowName = row.transform.name;
@@ -21,9 +21,10 @@ public class StaggerScript : MonoBehaviour
         
             foreach(Transform hex in row)
             {
-                tempHex.q = qStart + qOffset;
-                tempHex.r = r;
-                hex.GetComponent<MapHexScript>().thisHex = tempHex;
+                //tempHex.q = qStart + qOffset;
+                //tempHex.r = r;
+                hex.GetComponent<MapHexScript>().thisHex.q = qStart + qOffset;
+                hex.GetComponent<MapHexScript>().thisHex.r = r;
                 qOffset++;
             }
         }

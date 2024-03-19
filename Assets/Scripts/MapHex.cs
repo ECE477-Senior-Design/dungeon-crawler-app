@@ -12,8 +12,6 @@ public class MapHex
     public string type;
     private int code;
 
-    // private Dictionary<string, int> hexDefines;
-
     public MapHex(int _q, int _r, string _type)
     {
         q = _q;

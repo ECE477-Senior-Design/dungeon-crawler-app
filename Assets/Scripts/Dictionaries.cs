@@ -8,6 +8,8 @@ public class Dictionaries : MonoBehaviour
 
     public static Dictionary <string, int> codeDict;
     public static Dictionary <string, Color> colorDict;
+    public static Dictionary <string, int> raceDict;
+    public static Dictionary <string, int> classDict;
 
     static Dictionaries()
     {
@@ -28,14 +30,23 @@ public class Dictionaries : MonoBehaviour
             {"Player", Color.white},
             {"Enemy", Color.white}
         };
+
+        raceDict = new Dictionary<string, int>{
+            
+        };
+
+        classDict = new Dictionary<string, int>{
+
+            {"Fighter", 0}
+        };
     }
 
-    public static int getCode(string val)
+    public static int GetCode(string val)
     {
         return codeDict[val];
     }
 
-    public static Color getColor(string val)
+    public static Color GetColor(string val)
     {
         return colorDict[val];
     }
