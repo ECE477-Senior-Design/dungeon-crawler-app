@@ -6,20 +6,20 @@ using System;
 public class Dictionaries : MonoBehaviour
 {
 
-    public static Dictionary <string, int> codeDict;
+    public static Dictionary <string, char> codeDict;
     public static Dictionary <string, Color> colorDict;
     public static Dictionary <string, int> raceDict;
     public static Dictionary <string, int> classDict;
 
     static Dictionaries()
     {
-        codeDict = new Dictionary<string, int>{
+        codeDict = new Dictionary<string, char>{
 
-            {"Floor", 0},
-            {"Wall", 1},
-            {"Chest", 2},
-            {"Player", 3},
-            {"Enemy", 4}
+            {"Floor", '0'},
+            {"Wall", '1'},
+            {"Chest", '2'},
+            {"Player", '3'},
+            {"Enemy", '4'}
         };
 
         colorDict = new Dictionary<string, Color>{
@@ -41,7 +41,7 @@ public class Dictionaries : MonoBehaviour
         };
     }
 
-    public static int GetCode(string val)
+    public static char GetCode(string val)
     {
         return codeDict[val];
     }

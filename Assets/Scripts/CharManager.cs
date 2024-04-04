@@ -26,7 +26,6 @@ public class CharManager : MonoBehaviour
 
     public void SwitchToMap()
     {
-        Debug.Log("switching to map");
         charPage.GetComponent<Canvas>().enabled = false;
         mapManager.mapPage.GetComponent<Canvas>().enabled = true;
     }
@@ -34,10 +33,6 @@ public class CharManager : MonoBehaviour
     public void SaveCharacter()
     {
         curChar = new BaseCharacter(type, editorScript.GetName(), editorScript.GetRace(), editorScript.GetClass(), editorScript.GetStats());
-        Debug.Log(curChar.type);
-        Debug.Log(curChar.GetName());
-        Debug.Log(curChar.GetRace());
-        Debug.Log(curChar.myStats.speed);
         if(curChar.type == 0)
         {
             playerList.Add(curChar);

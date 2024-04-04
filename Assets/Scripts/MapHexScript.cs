@@ -51,9 +51,9 @@ public class MapHexScript : MonoBehaviour, IPointerDownHandler, IPointerEnterHan
         manager.held = false;
     }
 
-    public string GetTypeCode()
+    public char GetTypeCode()
     {
-        return Dictionaries.GetCode(thisHex.type).ToString();
+        return Dictionaries.GetCode(thisHex.type);
     }
 
 }

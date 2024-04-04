@@ -6365,7 +6365,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 535656911}
         m_TargetAssemblyTypeName: MapManager, Assembly-CSharp
-        m_MethodName: SendToText
+        m_MethodName: SentToPort
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6748,7 +6748,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 535656911}
         m_TargetAssemblyTypeName: MapManager, Assembly-CSharp
-        m_MethodName: SendToText
+        m_MethodName: SentToPort
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
