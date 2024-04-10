@@ -55,17 +55,10 @@ public class BaseCharacter
         return charClass;
     }
 
-    //from Neil
-    // Character::Character(std::string name, int column, int row, 
-    //         int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma,
-    //         int max_health_points, int current_health_points, int armor_class, int initiative, int speed) {
-
-
     public string PrintInfo()
     {
-        return (name + "," + myStats.strength + "," + myStats.dexterity + "," + myStats.constitution + "," + myStats.intelligence + "," + myStats.wisdom + "," + myStats.charisma + "," + myStats.maxHP + "," + myStats.curHP + "," + myStats.armor + "," + myStats.speed);
+        return (name + "," + column.ToString() + "," + row.ToString() + "," + myStats.strength + "," + myStats.dexterity + "," + myStats.constitution + "," + myStats.intelligence + "," + myStats.wisdom + "," + myStats.charisma + "," + myStats.maxHP + "," + myStats.curHP + "," + myStats.armor + "," + "0," + myStats.speed);
 
-               //don't have column, row, or initiative
     }
 
 }

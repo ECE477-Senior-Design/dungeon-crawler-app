@@ -8,6 +8,7 @@ using System.Text;
 using System.IO.Ports;
 using System.Threading;
 using TMPro;
+using System.Management;
 
 public class MapManager : MonoBehaviour
 {
@@ -163,21 +164,23 @@ public class MapManager : MonoBehaviour
 
         string test = new string(textString);
 
-        Debug.Log(test);
+        //Debug.Log(test);
         _serialPort.Write(textString, 0, 256); //send map to serial port
-        //_serialPort.Write("\n");
-
-        foreach(BaseCharacter c in charManager.playerList)
+        
+        if(charManager.playerList.Count != 0)
         {
-            //System.IO.File.AppendAllText(filepath, c.PrintInfo() + Environment.NewLine);
-            //_serialPort.Write(c.PrintInfo());
-
+            foreach(BaseCharacter c in charManager.playerList)
+            {
+                _serialPort.Write(c.PrintInfo() + "\n");
+            }
         }
 
-        foreach(BaseCharacter c in charManager.monsterList)
+        if(charManager.monsterList.Count != 0)
         {
-            //System.IO.File.AppendAllText(filepath, c.PrintInfo() + Environment.NewLine);
-            //_serialPort.Write(c.PrintInfo());
+            foreach(BaseCharacter c in charManager.monsterList)
+            {
+                _serialPort.Write(c.PrintInfo() + "\n");
+            }
         }
 
         _serialPort.Close();
