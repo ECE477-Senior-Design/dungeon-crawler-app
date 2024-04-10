@@ -19,6 +19,7 @@ public class CharManager : MonoBehaviour
     void OnEnable()
     {
         mapManager = GetComponent<MapManager>();
+        charPage.GetComponent<Canvas>().enabled = false;
         editorScript = playerEditor.GetComponent<PlayerEditor>();
         playerList = new List<BaseCharacter>();
         monsterList = new List<BaseCharacter>();
@@ -28,6 +29,7 @@ public class CharManager : MonoBehaviour
     {
         charPage.GetComponent<Canvas>().enabled = false;
         mapManager.mapPage.GetComponent<Canvas>().enabled = true;
+        
     }
 
     public void SaveCharacter()
@@ -50,9 +52,5 @@ public class CharManager : MonoBehaviour
         type = player ? 0 : 1;
         editorScript.Clear();
     }
-
-
-
-     
     
 }

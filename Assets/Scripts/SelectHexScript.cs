@@ -13,7 +13,7 @@ public class SelectHexScript : MonoBehaviour, IPointerDownHandler
     void OnEnable()
     {
         managerScript = GameObject.Find("GameManager").GetComponent<MapManager>();
-        setColor();
+        SetColors();
     }
 
     public void OnPointerDown(PointerEventData data)
@@ -22,8 +22,9 @@ public class SelectHexScript : MonoBehaviour, IPointerDownHandler
         //Debug.Log(gameObject.tag);
     }
 
-    void setColor()
+    void SetColors()
     {
-        Dictionaries.colorDict[gameObject.tag] = gameObject.GetComponent<Image>().color;
+        gameObject.GetComponent<Image>().color = Dictionaries.colorDict[gameObject.tag];
+        Debug.Log(Dictionaries.colorDict[gameObject.tag]);
     }
 }

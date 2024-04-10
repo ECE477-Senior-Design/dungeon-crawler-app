@@ -22,6 +22,7 @@ public class MapHexScript : MonoBehaviour, IPointerDownHandler, IPointerEnterHan
         manager = GameObject.Find("GameManager").GetComponent<MapManager>();
         thisHex = new MapHex(0, 0, "Floor");
         gameObject.tag = thisHex.type;
+        gameObject.GetComponent<Image>().color = Dictionaries.colorDict[gameObject.tag];
     }
 
     //check for dragging
@@ -38,12 +39,15 @@ public class MapHexScript : MonoBehaviour, IPointerDownHandler, IPointerEnterHan
     //check for click
     public void OnPointerDown(PointerEventData data)
     {
-        // Debug.Log("Manager:" + manager.curType);
-        // Debug.Log("This Hex:" + thisHex.type);
         manager.held = true;
         thisHex.type = manager.curType;
         gameObject.tag = thisHex.type;
         GetComponent<Image>().color = Dictionaries.GetColor(manager.curType);
+        if(manager.setMode == true)
+        {
+            manager.curHex = thisHex;
+            manager.characterSet = true;
+        }
     }
 
     public void OnPointerUp(PointerEventData data)

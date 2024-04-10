@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.IO.Ports;
 using System.Threading;
+using TMPro;
 
 public class MapManager : MonoBehaviour
 {
@@ -17,15 +18,18 @@ public class MapManager : MonoBehaviour
     public Transform stagger1;
     public Transform stagger2;
     public bool held;
+    public TMP_Text characterText;
 
     private List<Transform> evenRows;
     private List<Transform> oddRows;
+    private List<Transform> allRows;
     private char[] textString;
     public GameObject mapPage;
     private CharManager charManager;
 
-    public GameObject testHex1;
-    public GameObject testHex2;
+    public bool setMode;
+    public bool characterSet;
+    public MapHex curHex;
 
     public void OnEnable()
     {
@@ -36,87 +40,7 @@ public class MapManager : MonoBehaviour
         //get rows into two separate lists for easy access
         evenRows = new List<Transform>();
         oddRows = new List<Transform>();
-    }
-
-    public void switchToCharacter()
-    {
-        
-        charManager.charPage.GetComponent<Canvas>().enabled = true;
-        mapPage.GetComponent<Canvas>().enabled = false;
-    }
-
-    // public void SendToText()
-    // {
-    //     // C:\Users\grace\AppData\LocalLow\DefaultCompany\SeniorDesignApp
-    //     string filepath = Application.persistentDataPath + "/HexData.txt";
-
-    //     System.IO.File.WriteAllText(filepath, ""); //reset file
-
-    //     Debug.Log("tag: " + testHex1.tag);
-    //     Debug.Log("type: " + testHex1.GetComponent<MapHexScript>().thisHex.type);
-    //     Debug.Log(testHex1.GetComponent<MapHexScript>().thisHex.q);
-    //     Debug.Log(testHex1.GetComponent<MapHexScript>().thisHex.r);
-
-    //     Debug.Log("tag: " + testHex2.tag);
-    //     Debug.Log("type: " + testHex2.GetComponent<MapHexScript>().thisHex.type);
-    //     Debug.Log(testHex2.GetComponent<MapHexScript>().thisHex.q);
-    //     Debug.Log(testHex2.GetComponent<MapHexScript>().thisHex.r);
-
-
-    //     foreach(Transform row in stagger1)
-    //     {
-    //         evenRows.Add(row);
-    //     }
-    //     foreach(Transform row in stagger2)
-    //     {
-    //         oddRows.Add(row);
-    //     }
-
-    //     for(int i = 0; i < 8; i++)
-    //     {
-    //         var curRow0 = evenRows[i]; //row0, row2, row4 ... row14
-    //         var curRow1 = oddRows[i]; //row1, row3, row5 ... row15
-    //         foreach(Transform hexObject in curRow0)
-    //         {
-    //             textString = hexObject.GetComponent<MapHexScript>().GetTypeCode();
-    //             System.IO.File.AppendAllText(filepath, textString);
-    //         }
-    //         foreach(Transform hexObject in curRow1)
-    //         {
-    //             textString = hexObject.GetComponent<MapHexScript>().GetTypeCode();
-    //             System.IO.File.AppendAllText(filepath, textString);
-    //         }
-    //     }
-
-    //     System.IO.File.AppendAllText(filepath, Environment.NewLine);
-
-    //     foreach(BaseCharacter c in charManager.playerList)
-    //     {
-    //         System.IO.File.AppendAllText(filepath, c.PrintInfo() + Environment.NewLine);
-    //     }
-
-    //     foreach(BaseCharacter c in charManager.monsterList)
-    //     {
-    //         System.IO.File.AppendAllText(filepath, c.PrintInfo() + Environment.NewLine);
-    //     }
-
-        
-
-    //     //print characters
-
-    //     //get all characters from char manager
-    //     //for each character in list, 
-
-    // }
-
-    public void SentToPort()
-    {
-                // C:\Users\grace\AppData\LocalLow\DefaultCompany\SeniorDesignApp
-        SerialPort _serialPort = new SerialPort("COM6", 19200, Parity.None, 8, StopBits.One);
-        _serialPort.Handshake = Handshake.None;
-
-        _serialPort.Open(); //open the port
-        //_serialPort.WriteTimeout = 500;
+        allRows = new List<Transform>();
 
         foreach(Transform row in stagger1)
         {
@@ -126,6 +50,98 @@ public class MapManager : MonoBehaviour
         {
             oddRows.Add(row);
         }
+        for(int i = 0; i < 8; i++)
+        {
+            allRows.Add(stagger1.GetChild(i));
+            allRows.Add(stagger2.GetChild(i));
+        }
+    }
+
+    public void switchToCharacter()
+    {  
+        charManager.charPage.GetComponent<Canvas>().enabled = true;
+        mapPage.GetComponent<Canvas>().enabled = false;
+        StopAllCoroutines();
+    }
+
+    public void SetCharacters()
+    {
+        if((charManager.playerList.Count == 0) && (charManager.monsterList.Count == 0))
+        {
+            characterText.text = "No characters created";
+            return;
+        }
+        foreach(BaseCharacter c in charManager.playerList)
+        {
+            var hexUI = allRows[c.row].GetChild(c.column);
+            if(hexUI.GetComponent<MapHexScript>().thisHex.type == "Floor")
+            {
+                break;
+            }
+            hexUI.GetComponent<MapHexScript>().thisHex.type = "Floor";
+            hexUI.GetComponent<MapHexScript>().gameObject.tag = "Floor";
+            hexUI.GetComponent<MapHexScript>().GetComponent<Image>().color = Dictionaries.GetColor("Floor");     
+        }
+        foreach(BaseCharacter c in charManager.monsterList)
+        {
+            var hexUI = allRows[c.row].GetChild(c.column);
+            if(hexUI.GetComponent<MapHexScript>().thisHex.type == "Floor")
+            {
+                break;
+            }
+            hexUI.GetComponent<MapHexScript>().thisHex.type = "Floor";
+            hexUI.GetComponent<MapHexScript>().gameObject.tag = "Floor";
+            hexUI.GetComponent<MapHexScript>().GetComponent<Image>().color = Dictionaries.GetColor("Floor");     
+        }
+        StartCoroutine(WaitForSet());
+    }
+
+    public IEnumerator WaitForSet()
+    {
+        setMode = true;
+
+        if(charManager.playerList.Count != 0)
+        {
+            curType = "Player";
+            foreach(BaseCharacter c in charManager.playerList)
+            {
+                characterText.text = "Place\n" + c.GetName() + "\non the map";
+
+                characterSet = false;
+                while(characterSet == false)
+                {
+                    yield return null;
+                }
+                c.row = curHex.row;
+                c.column = curHex.column;
+            }
+        }
+
+        if(charManager.monsterList.Count != 0)
+        {
+            curType = "Enemy";
+            foreach(BaseCharacter c in charManager.monsterList)
+            {
+                characterText.text = "Place\n" + c.GetName() + "\non the map";
+                characterSet = false;
+                while(characterSet == false)
+                {
+                    yield return null;
+                }
+                c.row = curHex.row;
+                c.column = curHex.column;
+            }
+        }
+        characterText.text = "All characters placed";
+        setMode = false;
+    }
+
+    public void SentToPort()
+    {
+        SerialPort _serialPort = new SerialPort("COM6", 19200, Parity.None, 8, StopBits.One);
+        _serialPort.Handshake = Handshake.None;
+
+        _serialPort.Open(); //open the port
 
         int place = 0;
 

@@ -21,6 +21,8 @@ public class BaseCharacter
     }
 
     public int type;
+    public int row;
+    public int column;
     public Stats myStats;
     private string name;
     private string race;
@@ -34,6 +36,8 @@ public class BaseCharacter
         race = _r;
         charClass = _c;
         myStats = newStats;
+        row = 0;
+        column = 0;
     }
 
     public string GetName()

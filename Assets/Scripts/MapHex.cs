@@ -11,12 +11,16 @@ public class MapHex
     public int r;
     public string type;
     private int code;
+    public int row;
+    public int column;
 
     public MapHex(int _q, int _r, string _type)
     {
         q = _q;
         r = _r;
         type = _type;
+        row = r;
+        column = q + r/2;
     }
 
     public string getInfo()

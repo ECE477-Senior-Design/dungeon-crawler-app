@@ -25,6 +25,8 @@ public class StaggerScript : MonoBehaviour
                 //tempHex.r = r;
                 hex.GetComponent<MapHexScript>().thisHex.q = qStart + qOffset;
                 hex.GetComponent<MapHexScript>().thisHex.r = r;
+                hex.GetComponent<MapHexScript>().thisHex.column = qStart + qOffset + r/2;
+                hex.GetComponent<MapHexScript>().thisHex.row = r;
                 qOffset++;
             }
         }
