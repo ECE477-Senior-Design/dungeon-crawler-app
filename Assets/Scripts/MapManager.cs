@@ -8,7 +8,6 @@ using System.Text;
 using System.IO.Ports;
 using System.Threading;
 using TMPro;
-using System.Management;
 
 public class MapManager : MonoBehaviour
 {
@@ -20,6 +19,9 @@ public class MapManager : MonoBehaviour
     public Transform stagger2;
     public bool held;
     public TMP_Text characterText;
+    public TMP_Text selectText;
+    public GameObject comInput;
+    private int numSet = 0;
 
     private List<Transform> evenRows;
     private List<Transform> oddRows;
@@ -31,10 +33,12 @@ public class MapManager : MonoBehaviour
     public bool setMode;
     public bool characterSet;
     public MapHex curHex;
+    public Button floorButton;
 
     public void OnEnable()
     {
         curType = "Floor";
+        selectText.text = "Floor";
         charManager = GetComponent<CharManager>();
         mapPage = GameObject.Find("MapPage");
         textString = new char[256];
@@ -72,27 +76,34 @@ public class MapManager : MonoBehaviour
             characterText.text = "No characters created";
             return;
         }
-        foreach(BaseCharacter c in charManager.playerList)
+        if(numSet == 0)
         {
-            var hexUI = allRows[c.row].GetChild(c.column);
-            if(hexUI.GetComponent<MapHexScript>().thisHex.type == "Floor")
-            {
-                break;
-            }
-            hexUI.GetComponent<MapHexScript>().thisHex.type = "Floor";
-            hexUI.GetComponent<MapHexScript>().gameObject.tag = "Floor";
-            hexUI.GetComponent<MapHexScript>().GetComponent<Image>().color = Dictionaries.GetColor("Floor");     
+            numSet++;
         }
-        foreach(BaseCharacter c in charManager.monsterList)
+        else
         {
-            var hexUI = allRows[c.row].GetChild(c.column);
-            if(hexUI.GetComponent<MapHexScript>().thisHex.type == "Floor")
+            foreach(BaseCharacter c in charManager.playerList)
             {
-                break;
+                var hexUI = allRows[c.row].GetChild(c.column); //get the location of the character
+                if(hexUI.GetComponent<MapHexScript>().thisHex.type == "Floor")
+                {
+                    break;
+                }
+                hexUI.GetComponent<MapHexScript>().thisHex.type = "Floor";
+                hexUI.GetComponent<MapHexScript>().gameObject.tag = "Floor";
+                hexUI.GetComponent<MapHexScript>().GetComponent<Image>().color = Dictionaries.GetColor("Floor");     
             }
-            hexUI.GetComponent<MapHexScript>().thisHex.type = "Floor";
-            hexUI.GetComponent<MapHexScript>().gameObject.tag = "Floor";
-            hexUI.GetComponent<MapHexScript>().GetComponent<Image>().color = Dictionaries.GetColor("Floor");     
+            foreach(BaseCharacter c in charManager.monsterList)
+            {
+                var hexUI = allRows[c.row].GetChild(c.column);
+                if(hexUI.GetComponent<MapHexScript>().thisHex.type == "Floor")
+                {
+                    break;
+                }
+                hexUI.GetComponent<MapHexScript>().thisHex.type = "Floor";
+                hexUI.GetComponent<MapHexScript>().gameObject.tag = "Floor";
+                hexUI.GetComponent<MapHexScript>().GetComponent<Image>().color = Dictionaries.GetColor("Floor");     
+            }
         }
         StartCoroutine(WaitForSet());
     }
@@ -134,12 +145,19 @@ public class MapManager : MonoBehaviour
             }
         }
         characterText.text = "All characters placed";
+        selectText.text = "Floor";
+        floorButton.Select();
+        curType = "Floor";
         setMode = false;
     }
 
     public void SentToPort()
     {
-        SerialPort _serialPort = new SerialPort("COM6", 19200, Parity.None, 8, StopBits.One);
+        string num = comInput.GetComponent<TMP_InputField>().text;
+        string port = "COM" + num;
+        Debug.Log(port);
+        SerialPort _serialPort = new SerialPort(port, 19200, Parity.None, 8, StopBits.One);
+        _serialPort.WriteTimeout = 2000;
         _serialPort.Handshake = Handshake.None;
 
         _serialPort.Open(); //open the port
@@ -162,9 +180,6 @@ public class MapManager : MonoBehaviour
             }
         }
 
-        string test = new string(textString);
-
-        //Debug.Log(test);
         _serialPort.Write(textString, 0, 256); //send map to serial port
         
         if(charManager.playerList.Count != 0)

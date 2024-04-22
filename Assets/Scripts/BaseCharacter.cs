@@ -18,6 +18,9 @@ public class BaseCharacter
         public string curHP;
         public string speed;
         public string armor;
+        public string gold;
+        public string visibility;
+        public string initiative;
     }
 
     public int type;
@@ -33,8 +36,8 @@ public class BaseCharacter
     {
         type = _type;
         name = _n;
-        race = _r;
-        charClass = _c;
+        race = Dictionaries.raceDict[_r];
+        charClass = Dictionaries.classDict[_c];
         myStats = newStats;
         row = 0;
         column = 0;
@@ -57,8 +60,25 @@ public class BaseCharacter
 
     public string PrintInfo()
     {
-        return (name + "," + column.ToString() + "," + row.ToString() + "," + myStats.strength + "," + myStats.dexterity + "," + myStats.constitution + "," + myStats.intelligence + "," + myStats.wisdom + "," + myStats.charisma + "," + myStats.maxHP + "," + myStats.curHP + "," + myStats.armor + "," + "0," + myStats.speed);
-
+        return (name + "," + //0
+        column.ToString() + "," //1
+        + row.ToString() + "," //2
+        + myStats.strength + "," //3
+        + myStats.dexterity + "," //4
+        + myStats.constitution + "," //5
+        + myStats.intelligence + "," //6
+        + myStats.wisdom + "," //7
+        + myStats.charisma + "," //8
+        + myStats.maxHP + "," //9
+        + myStats.curHP + "," //10
+        + myStats.armor + "," //11
+        + myStats.initiative + "," //12, initiative
+        + myStats.speed + "," //13
+        + myStats.gold + "," //14
+        + myStats.visibility + "," //15
+        + race + "," //16
+        + type.ToString() + "," //17
+        + charClass); //18
     }
 
 }

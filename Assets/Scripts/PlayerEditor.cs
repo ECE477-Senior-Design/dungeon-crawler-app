@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.UI;
 
 public class PlayerEditor : MonoBehaviour
 {
@@ -19,6 +20,11 @@ public class PlayerEditor : MonoBehaviour
     public GameObject intelInput;
     public GameObject wisInput;
     public GameObject charInput;
+    public GameObject visibilityInput;
+    public GameObject goldInput;
+    public GameObject title;
+    public GameObject initInput;
+    public GameObject initSection;
 
     public BaseCharacter.Stats curStats;
     public GameObject infoFields;
@@ -28,6 +34,26 @@ public class PlayerEditor : MonoBehaviour
     {
         infoFields.SetActive(false);
         statFields.SetActive(false);
+
+        SetLimit(nameInput, 10);
+        SetLimit(armorInput, 2);
+        SetLimit(speedInput, 2);
+        SetLimit(maxHPInput, 2);
+        SetLimit(curHPInput, 2);
+        SetLimit(strInput, 2);
+        SetLimit(dexInput, 2);
+        SetLimit(constInput, 2);
+        SetLimit(intelInput, 2);
+        SetLimit(wisInput, 2);
+        SetLimit(charInput, 2);
+        SetLimit(visibilityInput, 2);
+        SetLimit(goldInput, 2);
+        SetLimit(initInput, 2);      
+    }
+
+    private void SetLimit(GameObject go, int limit)
+    {
+        go.GetComponent<TMP_InputField>().characterLimit = limit;
     }
 
     private string GetText(GameObject input)
@@ -52,15 +78,31 @@ public class PlayerEditor : MonoBehaviour
         curStats.curHP = GetText(curHPInput);
         curStats.speed = GetText(speedInput);
         curStats.armor = GetText(armorInput);
+        curStats.visibility = GetText(visibilityInput);
+        curStats.gold = GetText(goldInput);
+        curStats.initiative = GetText(initInput);
 
         return curStats;
+    }
+
+    public int CheckHP()
+    {
+        int curHP = int.Parse(GetText(curHPInput));
+        int maxHP = int.Parse(GetText(maxHPInput));
+        if(curHP > maxHP)
+        {
+            return 1;
+        }
+        else if(maxHP <= 0)
+        {
+            return 2;
+        }  
+        return 0;
     }
 
     public void Clear()
     {
         SetText(nameInput, "");
-        SetText(raceInput, "");
-        SetText(classInput, "");
         SetText(strInput, "0");
         SetText(dexInput, "0");
         SetText(constInput, "0");
@@ -71,6 +113,19 @@ public class PlayerEditor : MonoBehaviour
         SetText(curHPInput, "0");
         SetText(speedInput, "0");
         SetText(armorInput, "0");
+        SetText(goldInput, "0");
+        SetText(visibilityInput, "0");
+        SetText(initInput, "0");
+
+
+        if(title.GetComponent<TMP_Text>().text == "Player")
+        {
+            initSection.SetActive(false);
+        }
+        else
+        {
+            initSection.SetActive(true);
+        }
 
     }
 
@@ -81,12 +136,14 @@ public class PlayerEditor : MonoBehaviour
 
     public string GetRace()
     {
-        return GetText(raceInput);
+        int index = raceInput.GetComponent<TMP_Dropdown>().value;
+        return raceInput.GetComponent<TMP_Dropdown>().options[index].text;
     }
 
     public string GetClass()
     {
-        return GetText(classInput);
+        int index = classInput.GetComponent<TMP_Dropdown>().value;
+        return classInput.GetComponent<TMP_Dropdown>().options[index].text;
     }
 
 }

@@ -8,12 +8,12 @@ public class Dictionaries : MonoBehaviour
 
     public static Dictionary <string, char> codeDict;
     public static Dictionary <string, Color> colorDict;
-    public static Dictionary <string, int> raceDict;
-    public static Dictionary <string, int> classDict;
+    public static Dictionary <string, string> raceDict;
+    public static Dictionary <string, string> classDict;
 
-    public static Color wallColor = new Color(83.0f/255.0f, 5.0f/255.0f, 156.0f/255.0f);
+    public static Color wallColor = new Color(87.0f/255.0f, 17.0f/255.0f, 115.0f/255.0f);
     public static Color floorColor = new Color(200.0f/255.0f, 200.0f/255.0f, 200.0f/255.0f);
-    public static Color chestColor = new Color(230.0f/255.0f, 218.0f/255.0f, 96.0f/255.0f);
+    public static Color chestColor = new Color(255.0f/255.0f, 229.0f/255.0f, 63.0f/255.0f);
     public static Color playerColor = new Color(12.0f/255.0f, 123.0f/255.0f, 200.0f/255.0f);
     public static Color enemyColor = new Color(212.0f/255.0f, 19.0f/255.0f, 35.0f/255.0f);
 
@@ -21,7 +21,7 @@ public class Dictionaries : MonoBehaviour
     {
         codeDict = new Dictionary<string, char>{
 
-            {"Floor", '0'},
+            {"Floor", '8'},
             {"Wall", '1'},
             {"Chest", '4'},
             {"Player", '2'},
@@ -37,13 +37,12 @@ public class Dictionaries : MonoBehaviour
             {"Enemy", enemyColor}
         };
 
-        raceDict = new Dictionary<string, int>{
-            
+        raceDict = new Dictionary<string, string>{
+            {"Dragonborn", "0"}
         };
 
-        classDict = new Dictionary<string, int>{
-
-            {"Fighter", 0}
+        classDict = new Dictionary<string, string>{
+            {"Fighter", "0"}
         };
     }
 

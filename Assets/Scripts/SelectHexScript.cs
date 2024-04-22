@@ -9,6 +9,7 @@ public class SelectHexScript : MonoBehaviour, IPointerDownHandler
     //attach to select hex prefab
 
     private MapManager managerScript;
+    private int selected;
 
     void OnEnable()
     {
@@ -16,15 +17,23 @@ public class SelectHexScript : MonoBehaviour, IPointerDownHandler
         SetColors();
     }
 
+    // void Update()
+    // {
+    //     if(managerScript.curType == gameObject.tag)
+    //     {
+    //         GetComponent<Button>().Select();
+    //     }
+    // }
+
     public void OnPointerDown(PointerEventData data)
     {
         managerScript.curType = gameObject.tag;
-        //Debug.Log(gameObject.tag);
+        managerScript.selectText.text = gameObject.tag;
     }
 
     void SetColors()
     {
         gameObject.GetComponent<Image>().color = Dictionaries.colorDict[gameObject.tag];
-        Debug.Log(Dictionaries.colorDict[gameObject.tag]);
+        //Debug.Log(Dictionaries.colorDict[gameObject.tag]);
     }
 }
