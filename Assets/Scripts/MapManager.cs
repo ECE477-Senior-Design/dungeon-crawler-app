@@ -69,11 +69,35 @@ public class MapManager : MonoBehaviour
         StopAllCoroutines();
     }
 
+    public void ClearMap()
+    {
+        //tempHex = new MapHex(0, 0, "Floor");
+        foreach(Transform row in stagger1)
+        {      
+            foreach(Transform hex in row)
+            {
+                hex.GetComponent<MapHexScript>().thisHex.type = "Floor";
+                hex.GetComponent<MapHexScript>().gameObject.tag = "Floor";
+                hex.GetComponent<MapHexScript>().gameObject.GetComponent<Image>().color = Dictionaries.GetColor("Floor");
+            }
+        }
+
+        foreach(Transform row in stagger2)
+        {      
+            foreach(Transform hex in row)
+            {
+                hex.GetComponent<MapHexScript>().thisHex.type = "Floor";
+                hex.GetComponent<MapHexScript>().gameObject.tag = "Floor";
+                hex.GetComponent<MapHexScript>().gameObject.GetComponent<Image>().color = Dictionaries.GetColor("Floor");
+            }
+        }
+    }
+
     public void SetCharacters()
     {
         if((charManager.playerList.Count == 0) && (charManager.monsterList.Count == 0))
         {
-            characterText.text = "No characters created";
+            characterText.text = "No Characters Created";
             return;
         }
         if(numSet == 0)
@@ -117,7 +141,7 @@ public class MapManager : MonoBehaviour
             curType = "Player";
             foreach(BaseCharacter c in charManager.playerList)
             {
-                characterText.text = "Place\n" + c.GetName() + "\non the map";
+                characterText.text = "Place " + c.GetName() + "\non the map";
 
                 characterSet = false;
                 while(characterSet == false)
@@ -134,7 +158,7 @@ public class MapManager : MonoBehaviour
             curType = "Enemy";
             foreach(BaseCharacter c in charManager.monsterList)
             {
-                characterText.text = "Place\n" + c.GetName() + "\non the map";
+                characterText.text = "Place " + c.GetName() + "\non the map";
                 characterSet = false;
                 while(characterSet == false)
                 {
@@ -144,7 +168,7 @@ public class MapManager : MonoBehaviour
                 c.column = curHex.column;
             }
         }
-        characterText.text = "All characters placed";
+        characterText.text = "All Characters Placed";
         selectText.text = "Floor";
         floorButton.Select();
         curType = "Floor";
@@ -187,6 +211,7 @@ public class MapManager : MonoBehaviour
             foreach(BaseCharacter c in charManager.playerList)
             {
                 _serialPort.Write(c.PrintInfo() + "\n");
+                Debug.Log(c.PrintInfo());
             }
         }
 
@@ -195,6 +220,7 @@ public class MapManager : MonoBehaviour
             foreach(BaseCharacter c in charManager.monsterList)
             {
                 _serialPort.Write(c.PrintInfo() + "\n");
+                Debug.Log(c.PrintInfo());
             }
         }
 

@@ -58,6 +58,26 @@ public class BaseCharacter
         return charClass;
     }
 
+    public BaseCharacter.Stats GetStats()
+    {
+        return myStats;
+    }
+
+    public void SetName(string _n)
+    {
+        name = _n;
+    }
+
+    public void SetClass(string _c)
+    {
+        charClass = Dictionaries.classDict[_c];
+    }
+
+    public void SetRace(string _r)
+    {
+        race = Dictionaries.raceDict[_r];
+    }
+
     public string PrintInfo()
     {
         return (name + "," + //0

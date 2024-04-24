@@ -29,6 +29,8 @@ public class PlayerEditor : MonoBehaviour
     public BaseCharacter.Stats curStats;
     public GameObject infoFields;
     public GameObject statFields;
+    public TMP_Dropdown classDrop;
+    public TMP_Dropdown raceDrop;
 
     public void OnEnable()
     {
@@ -83,6 +85,49 @@ public class PlayerEditor : MonoBehaviour
         curStats.initiative = GetText(initInput);
 
         return curStats;
+    }
+
+    public void SetStats(string name, string cl, string race, BaseCharacter.Stats stats)
+    {   
+        SetText(nameInput, name);
+        SetText(strInput, stats.strength);
+        SetText(dexInput, stats.dexterity);
+        SetText(constInput, stats.constitution);
+        SetText(intelInput, stats.intelligence);
+        SetText(wisInput, stats.wisdom);
+        SetText(charInput, stats.charisma);
+        SetText(maxHPInput, stats.maxHP);
+        SetText(curHPInput, stats.curHP);
+        SetText(speedInput, stats.speed);
+        SetText(armorInput, stats.armor);
+        SetText(visibilityInput, stats.visibility);
+        SetText(goldInput, stats.gold);
+        SetText(initInput, stats.initiative);
+
+        if(title.GetComponent<TMP_Text>().text == "Player")
+        {
+            initSection.SetActive(false);
+        }
+        else
+        {
+            initSection.SetActive(true);
+        }
+
+        classDrop.value = int.Parse(cl);
+        raceDrop.value = int.Parse(race);
+
+        // Debug.Log(cl);
+        // for(int i = 0; i < classDrop.options.Count; i++)
+        // {
+        //     if(classDrop.options[i].text == cl)
+        //     {
+        //         Debug.Log("seen");
+        //         classDrop.value = i;
+        //         break;
+        //     }
+        // }
+
+
     }
 
     public int CheckHP()

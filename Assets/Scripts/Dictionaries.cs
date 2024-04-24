@@ -38,11 +38,20 @@ public class Dictionaries : MonoBehaviour
         };
 
         raceDict = new Dictionary<string, string>{
-            {"Dragonborn", "0"}
+            {"Dragonborn", "0"},
+            {"Dwarf", "1"},
+            {"Elf", "2"},
+            {"Gnome", "3"},
+            {"Half Elf", "4"},
+            {"Halfling", "5"},
+            {"Half Orc", "6"},
+            {"Human", "7"},
+            {"Tiefling", "8"}
         };
 
         classDict = new Dictionary<string, string>{
-            {"Fighter", "0"}
+            {"Fighter", "0"},
+            {"Ranger", "1"}
         };
     }
 
