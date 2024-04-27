@@ -1101,7 +1101,7 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Half Elf
       m_Image: {fileID: 0}
-    - m_Text: Halfing
+    - m_Text: Halfling
       m_Image: {fileID: 0}
     - m_Text: Half Orc
       m_Image: {fileID: 0}
